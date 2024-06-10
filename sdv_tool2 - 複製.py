@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-# why
+# why do something
 
 #資料
 class Crop:
