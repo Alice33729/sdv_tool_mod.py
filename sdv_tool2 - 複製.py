@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-# why do something
 
 #資料
 class Crop:
@@ -13,8 +12,8 @@ class Crop:
         self.text = text
     #def Tiller(self,sell_s):
         #self.sell + self.sell*10% = sell_s
-        
-# blablabla
+
+
 Blue_Jazz = Crop("Blue Jazz", "Spring", 30, 50, 1, "Flower")
 Carrot = Crop("Carrot", "Spring", 0, 35, 1, "Can find by digging up Seed Spots.")
 Garlic = Crop("Garlic", "Spring", 40, 60, 2, "Available from year 2 in Pierre's.")
@@ -24,43 +23,53 @@ Powdermelon = Crop("Powdermelon", "Winter", 0, 60, 1, "Can find by digging up Se
 
 
 def Show_Info(*args):
-    """Info_Frame.grid_forget()
-    Frame_Name.grid_forget()
-    Frame_Season.grid_forget()
-    Frame_Pierre.grid_forget()
-    Frame_Regular.grid_forget()
-    Frame_Year.grid_forget()
-    Frame_Text.grid_forget()"""
-    print("show_info")
-    Info_Frame.grid()
-    Frame_Name.grid(column=0, row=0)
+    reset()
+    # 因為不用frame了，也就不用.grid()了
+    # 因為有很多還沒使用的功能還留著這個寫法，所以請自行清除這部分。
+    # info_Frame.grid()
+    """Frame_Name.grid(column=0, row=0)
     List_Name.grid(column=0, row=0)
     Frame_Year.grid(column=4, row=0)
-    List_Year.grid(column=0, row=0)
+    List_Year.grid(column=0, row=0)"""
 
-    if showSeason.get() == 'showsea_on':
-        print('showsea_on')
+    # 用列表儲存需要處理的作物資料
+    crop_list = []
+
+    """if showSeason.get() == 'showsea_on':
+        # print('showsea_on')
         List_Season.grid(column=0, row=0)
         Frame_Season.grid(column=1, row=0)
 
     if showPierre.get() == 'showpie_on':
-        print('showpie_on')
+        # print('showpie_on')
         List_Pierre.grid(column=0, row=0)
         Frame_Pierre.grid(column=2, row=0)
 
     if showRegular.get() == 'showreg_on':
-        print('showreg_on')
+        # print('showreg_on')
         List_Regular.grid(column=0, row=0)
         Frame_Regular.grid(column=3, row=0)
 
     if showText.get() == 'showtex_on':
-        print('showtex_on')
+        # print('showtex_on')
         List_Text.grid(column=0, row=0)
-        Frame_Text.grid(column=5, row=0)
+        Frame_Text.grid(column=5, row=0)"""
 
-    """if val_season.get() == 'All':
+    if val_season.get() == 'All':
         if year1.get() == 'y1_on':
-            #Blue_Jazz
+            # .grid()是功能，所以應該是先定義成label後再.grid()
+            # 一般加入的範例如下：
+            # tree.insert("", index="end", text=Blue_Jazz.name, values=[Blue_Jazz.year, Blue_Jazz.season, Blue_Jazz.buy, Blue_Jazz.sell,  Blue_Jazz.text])
+
+            # crop_list = [Blue_Jazz, Garlic, Carrot, Blueberry, Amaranth, Powdermelon]
+            # 與其定義有哪些，不如一個一個加進列表裡。
+            crop_list.append(Blue_Jazz)
+            crop_list.append(Carrot)
+            crop_list.append(Blueberry)
+            crop_list.append(Amaranth)
+            crop_list.append(Powdermelon)
+
+            """#Blue_Jazz
             Name_Blue_Jazz = tk.Label(Frame_Name, text= Blue_Jazz.name).grid()
             Season_Blue_Jazz = tk.Label(Frame_Season, text= Blue_Jazz.season).grid()
             Pierre_Blue_Jazz = tk.Label(Frame_Pierre, text= Blue_Jazz.buy).grid()
@@ -94,9 +103,11 @@ def Show_Info(*args):
             Pierre_Powdermelon = tk.Label(Frame_Pierre, text= Powdermelon.buy).grid()
             Regular_Powdermelon = tk.Label(Frame_Regular, text= Powdermelon.sell).grid()
             Year_Powdermelon = tk.Label(Frame_Year, text= Powdermelon.year).grid()
-            Text_Powdermelon = tk.Label(Frame_Text, text= Powdermelon.text).grid()
+            Text_Powdermelon = tk.Label(Frame_Text, text= Powdermelon.text).grid()"""
         if year2.get() == 'y2_on':
-            #Garlic
+            crop_list.append(Garlic)
+
+            """#Garlic
             Name_Garlic = tk.Label(Frame_Name, text= Garlic.name).grid()
             Season_Garlic = tk.Label(Frame_Season, text= Garlic.season).grid()
             Pierre_Garlic = tk.Label(Frame_Pierre, text= Garlic.buy).grid()
@@ -104,6 +115,7 @@ def Show_Info(*args):
             Year_Garlic = tk.Label(Frame_Year, text= Garlic.year).grid()
             Text_Garlic = tk.Label(Frame_Text, text= Garlic.text).grid()"""
 
+    # 這個好像重複了喔。
     if val_season.get() == 'All':
         pass
     elif val_season.get() == 'Spring':
@@ -167,7 +179,59 @@ def Show_Info(*args):
         if year2.get() == 'y2_on':
             pass
 
+    # 陳列的列數以列表儲存
+    # 因為年和名字一樣常駐，因此移到最前面。
+    # 看起來columns叫什麼名字只是程式內的事，因為顯示的名字還是取決於heading。
+    # year常駐，所以預設在列表裡。
+    columns = ["year"]
+    # 各列的名字也以列表儲存，作物名稱和年份是預設的。
+    title_name = ["Name", "Year"]
+    # 依照選擇的數值決定要顯示幾個列，還有它們的標題名字。
+    if showSeason.get() == "showsea_on":
+        columns.append("season")
+        title_name.append("Season")
+    if showPierre.get() == "showpie_on":
+        columns.append("buy")
+        title_name.append("Buy")
+    if showRegular.get() == "showreg_on":
+        columns.append("sell")
+        title_name.append("Sell")
+    if showText.get() == "showtex_on":
+        columns.append("season")
+        title_name.append("text")
+    # treeview的columns直接以列表決定
+    crop_tree["columns"] = columns
 
+    # 以列表長度決定要加幾次，並把標題加上去。
+    # 但是因為第一列總是會存在，所以標題數量會比列多一個。
+    for i in range(len(title_name)):
+        crop_tree.heading(f"#{i}", text=title_name[i])
+    # tree.heading("#0", text="第一列的標題")
+    # tree.heading("#1", text="第二列的標題")
+    # tree.heading("#2", text="第三列的標題")
+    # tree.heading("#3", text="第四列的標題")
+
+    #crop_list裡面儲存要處理的作物（Class），因此後面可以指定item的.name等值。
+    for item in crop_list:
+        # 第一，決定有哪些值要顯示，因此這些值用一個列表儲存。
+        # 以勾選的格子決定要加入哪些數值
+        value = [item.year]
+        if showSeason.get() == "showsea_on":
+            value.append(item.season)
+        if showPierre.get() == "showpie_on":
+            value.append(item.buy)
+        if showRegular.get() == "showreg_on":
+            value.append(item.sell)
+        if showText.get() == "showtex_on":
+            value.append(item.text)
+        # 再來，values直接沿用已經儲存資料的列表。text是第一列，因此是作物名。
+        crop_tree.insert("", index="end", text=item.name, values=value)
+
+    # 顯示treeview
+    crop_tree.grid(column=0, row=6)
+
+
+# 有個想法是這樣的，與其特別設計一個重置按鈕，不如讓這個功能在每次搜尋時啟動。所以現在是reset在Show_Info()裡了。
 def reset():
     # 這種取變數的做法只適用於class，除非從函式return變數，不然就必須要在函式外宣告變數並且從那裡取得。
     """
@@ -180,6 +244,8 @@ def reset():
     Show_Info.Frame_Year.grid_forget()
     Show_Info.Frame_Text.grid_forget()
     """
+    # 上面的東西正確的寫法如下：
+    """
     Info_Frame.grid_forget()
     Info_Frame.grid_forget()
     Frame_Name.grid_forget()
@@ -188,7 +254,12 @@ def reset():
     Frame_Regular.grid_forget()
     Frame_Year.grid_forget()
     Frame_Text.grid_forget()
-    Show_Info()
+    """
+    # 隱藏treeview
+    crop_tree.grid_forget()
+    # 聽說這樣可以清除treeview
+    crop_tree.delete(*crop_tree.get_children())
+    # Show_Info()
 
 #程式本體
 sdv = tk.Tk()
@@ -249,6 +320,8 @@ Skill_Tiller.deselect()   # 開始時不要勾選
 #顯示
 Show_title = tk.Label(Option_Frame, text='Show:')
 Show_title.grid(column=0, row=3)
+
+# 其實可以設定成BoolVar，值就是True或False，這樣寫if式時可以直接判定這個值是t還是f
 #季節
 showSeason = tk.StringVar()   
 Show_Season = tk.Checkbutton(Option_Frame, text='Season',
@@ -275,8 +348,8 @@ Show_Text.grid(column=4, row=3)
 Show_Text.select()   # 開始時勾選
 
 # 資訊框架
-Info_Frame = ttk.Frame(sdv, borderwidth=2, relief="groove")
-Info_Frame.grid(column=0, row=5)
+Info_Frame = ttk.Frame(sdv)
+# Info_Frame.grid(column=0, row=5)
 
 # 所有東西的Label
 Frame_Name = ttk.LabelFrame(Info_Frame, text='Name')
@@ -293,15 +366,15 @@ List_Pierre = ttk.Label(Frame_Pierre,)
 List_Regular = ttk.Label(Frame_Regular,)
 List_Text = ttk.Label(Frame_Text,)
 
+# treeview 啟動方法。columns參數後面才決定。
+# 注意這是ttk版本。
+crop_tree = ttk.Treeview(sdv)
 
-
-
-    
 # 按鈕
 Show_Button = tk.Button(Option_Frame, text='search', command=Show_Info)
 Show_Button.grid(column=0, row=4)
 
-test_Button = tk.Button(Option_Frame, text='search', command=reset)
+test_Button = tk.Button(Option_Frame, text='Clear', command=reset)
 test_Button.grid(column=1, row=4)
 
 sdv.mainloop()
