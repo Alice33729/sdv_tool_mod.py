@@ -13,7 +13,7 @@ class Crop:
     #def Tiller(self,sell_s):
         #self.sell + self.sell*10% = sell_s
         
-
+# blablabla
 Blue_Jazz = Crop("Blue Jazz", "Spring", 30, 50, 1, "Flower")
 Carrot = Crop("Carrot", "Spring", 0, 35, 1, "Can find by digging up Seed Spots.")
 Garlic = Crop("Garlic", "Spring", 40, 60, 2, "Available from year 2 in Pierre's.")
